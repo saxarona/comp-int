@@ -1,0 +1,221 @@
+\documentclass[titlepage, letterpaper, fleqn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr} % fancy headers, of course!
+\usepackage{amsmath} % what do you think?
+\usepackage{amsthm} % theorems!
+\usepackage{extramarks} % more cute things
+\usepackage{enumitem} % i'm not sure...
+\usepackage{multicol} % multicolumn...?
+\usepackage{amssymb} % more symbols
+\usepackage{MnSymbol} % moar symbols?
+\usepackage{booktabs} % cool looking tables
+\usepackage{tikz} %venn and shizzle
+\usepackage{mathrsfs} %math script for calligraphic scripting, I GUESS
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{algpseudocode}
+\usepackage{csquotes}
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+
+%
+% You should change this things~
+%
+
+\newcommand{\mahteacher}{José Carlos Ortiz Bayliss}
+\newcommand{\mahclass}{Computational Intelligence}
+\newcommand{\mahtitle}{Homework 05 \\
+\textsc{Programming Assignment 01}}
+\newcommand{\mahdate}{\today}
+
+\newcommand{\spacepls}{\vspace{5mm}}
+% \newcommand{\qedpls}{\blacksquare}
+
+\renewcommand\qedsymbol{\(\blacksquare\)}
+\renewcommand{\ttdefault}{pcr} %so we can get both bold and tt fonts
+
+\newcommand{\bigO}{\mathcal{O}} %you should be inside a math environment
+%
+% Header markings
+%
+
+\pagestyle{fancy}
+\lhead{01170065 - Xavier Sánchez}
+\chead{}
+\rhead{}
+\lfoot{}
+\rfoot{}
+
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+% \setlength\parskip{1.5pt}
+\setlength\parskip{1.5ex}
+
+
+%
+% Create Problem Sections (stolen directly from jdavis/latex-homework-template @ github!)
+%
+
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+\nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+\stepcounter{#1}
+\nobreak\extramarks{Problem \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\nobreak\extramarks{Exercise \arabic{homeworkProblemCounter}}{}\nobreak{}
+
+%Solution Environment
+% \newenvironment{solution}
+% {\renewcommand\qedsymbol{$\square$}\begin{proof}[Solution]}
+% {\end{proof}}
+
+% Alias for the Solution section header
+\newcommand{\solution}{\textbf{\Large Solution}}
+
+%Alias for the new step section
+\newcommand{\steppy}[1]{\textbf{\large #1}}
+
+%
+% Homework Problem Environment
+%
+% This environment takes an optional argument. When given, it will adjust the
+% problem counter. This is useful for when the problems given for your
+% assignment aren't sequential. See the last 3 problems of this template for an
+% example.
+%
+\newenvironment{homeworkProblem}[1][-1]{
+\ifnum#1>0
+\setcounter{homeworkProblemCounter}{#1}
+\fi
+\section{Problem \arabic{homeworkProblemCounter}}
+\setcounter{partCounter}{1}
+\enterProblemHeader{homeworkProblemCounter}
+}{
+\exitProblemHeader{homeworkProblemCounter}
+}
+
+%
+% Coloring of code listings
+%
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.98,0.98,0.98}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen},
+  keywordstyle=\bfseries\color{blue},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\footnotesize\ttfamily,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+%
+% My actual info
+%
+
+\title{
+\vspace{1in}
+\textbf{Tecnológico de Monterrey} \\
+\vspace{0.5in}
+\textmd{\mahclass} \\
+\vspace{0.5in}
+\large{\textit{\mahteacher}} \\
+\vspace{0.5in}
+\textsc{\mahtitle}\\
+\author{01170065  - MIT \\
+Xavier Fernando Cuauhtémoc Sánchez Díaz \\
+\texttt{xavier.sanchezdz@gmail.com}}
+\date{\mahdate}
+}
+
+\begin{document}
+
+\begin{titlepage}
+\maketitle
+\end{titlepage}
+
+%
+% Actual document starts here~
+%
+
+\begin{homeworkProblem}
+
+{\large \textbf{Perceptron}}
+
+\begin{itemize}
+  \item A multiple-input perceptron was implemented.
+  The perceptron receives one or more inputs and the outputs are either 0 or 1.
+  \item The activation function used was the \textbf{hard limit}, which maps a value $n$ to 0 if negative, or 1 otherwise.
+  \item The code was implemented in Julia, a high-level, high-performance dynamic programming language for numerical computing.
+  \item A \texttt{README.md} file is included with the details needed for set up and execution.
+\end{itemize}
+
+\spacepls
+
+{\large \textbf{Solutions}}
+
+\spacepls
+
+The solutions listed in this section are for 100\% accuracy unless otherwise specified.
+
+\begin{description}
+  \item[Dataset 01] \hfill \\
+  $W = [0.833214 -0.381716], b = [-0.085408]$
+  \item[Dataset 02] (80\% accuracy) \hfill \\
+  $W = [0.844879 -0.566039], b = [-0.120398]$
+  \item[Dataset 03] \hfill \\
+  $W = [0.0319514 -1.07417], b =[-0.0888104]$
+  \item[Dataset 04] ($\approx$ 82.35\% accuracy) \hfill \\
+  $W = [0.205825 -0.322592], b = [-0.00277436]$
+  \item[Dataset 05] \hfill \\
+  $W = [-1.57946 0.109479; 0.16207 -2.86934], b = [-0.0806363; 1.48257]$
+\end{description}
+
+\spacepls
+
+The perceptron is not able to fully learn the patterns on Dataset 02 and 04.
+After many runs (around 5 tries of 7k runs with 5k iterations for the training phase),
+it was clear that the perceptron would not be able to learn the patterns in those datasets.
+This is likely caused because of the nature of the models.
+Since we're using the \textit{hard limit} activation function, we're limited to learn only linear patterns, that is, classify instances in a dataset which is linearly separable.
+Using different activation functions in the ``neural network'' may be beneficial for this classification.
+
+\end{homeworkProblem}
+\end{document}
