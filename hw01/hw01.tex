@@ -1,0 +1,251 @@
+\documentclass[titlepage, letterpaper, fleqn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr} % fancy headers, of course!
+\usepackage{amsmath} % what do you think?
+\usepackage{amsthm} % theorems!
+\usepackage{extramarks} % more cute things
+\usepackage{enumitem} % i'm not sure...
+\usepackage{multicol} % multicolumn...?
+\usepackage{amssymb} % more symbols
+\usepackage{MnSymbol} % moar symbols?
+\usepackage{booktabs} % cool looking tables
+\usepackage{tikz} %venn and shizzle
+\usepackage{mathrsfs} %math script for calligraphic scripting, I GUESS
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{algpseudocode}
+\usepackage{csquotes}
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+
+%
+% You should change this things~
+%
+
+\newcommand{\mahteacher}{José Carlos Ortiz Bayliss}
+\newcommand{\mahclass}{Computational Intelligence}
+\newcommand{\mahtitle}{\textsc{Homework 01}}
+\newcommand{\mahdate}{\today}
+
+\newcommand{\spacepls}{\vspace{5mm}}
+% \newcommand{\qedpls}{\blacksquare}
+
+\renewcommand\qedsymbol{\(\blacksquare\)}
+\renewcommand{\ttdefault}{pcr} %so we can get both bold and tt fonts
+
+\newcommand{\bigO}{\mathcal{O}} %you should be inside a math environment
+%
+% Header markings
+%
+
+\pagestyle{fancy}
+\lhead{01170065 - Xavier Sánchez}
+\chead{}
+\rhead{}
+\lfoot{}
+\rfoot{}
+
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+% \setlength\parskip{1.5pt}
+\setlength\parskip{1.5ex}
+
+
+%
+% Create Problem Sections (stolen directly from jdavis/latex-homework-template @ github!)
+%
+
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+\nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+\stepcounter{#1}
+\nobreak\extramarks{Problem \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\nobreak\extramarks{Exercise \arabic{homeworkProblemCounter}}{}\nobreak{}
+
+%Solution Environment
+% \newenvironment{solution}
+% {\renewcommand\qedsymbol{$\square$}\begin{proof}[Solution]}
+% {\end{proof}}
+
+% Alias for the Solution section header
+\newcommand{\solution}{\vspace{2ex}\textbf{\large Solution}\vspace{2ex}}
+
+%Alias for the new step section
+\newcommand{\steppy}[1]{\textbf{\large #1}}
+
+%
+% Homework Problem Environment
+%
+% This environment takes an optional argument. When given, it will adjust the
+% problem counter. This is useful for when the problems given for your
+% assignment aren't sequential. See the last 3 problems of this template for an
+% example.
+%
+\newenvironment{homeworkProblem}[1][-1]{
+\ifnum#1>0
+\setcounter{homeworkProblemCounter}{#1}
+\fi
+\section{Problem \arabic{homeworkProblemCounter}}
+\setcounter{partCounter}{1}
+\enterProblemHeader{homeworkProblemCounter}
+}{
+\exitProblemHeader{homeworkProblemCounter}
+}
+
+%
+% Coloring of code listings
+%
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.98,0.98,0.98}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen},
+  keywordstyle=\bfseries\color{blue},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\footnotesize\ttfamily,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+%
+% My actual info
+%
+
+\title{
+\vspace{1in}
+\textbf{Tecnológico de Monterrey} \\
+\vspace{0.5in}
+\textmd{\mahclass} \\
+\vspace{0.5in}
+\large{\textit{\mahteacher}} \\
+\vspace{0.5in}
+\textsc{\mahtitle}\\
+\author{01170065  - MIT \\
+Xavier Fernando Cuauhtémoc Sánchez Díaz \\
+\texttt{xavier.sanchezdz@gmail.com}}
+\date{\mahdate}
+}
+
+\begin{document}
+
+\begin{titlepage}
+\maketitle
+\end{titlepage}
+
+%
+% Actual document starts here~
+%
+
+\begin{homeworkProblem}
+
+{\large \textbf{Answer the following questions}}
+
+\spacepls
+
+\textit{Data can change over time, in particular, we might observe different input/output relationships.
+In order to account for this we can adapt our learning system to the new data by, for example, training on new examples.
+If the relationship between inputs and outputs for old examples has not changed, how can we prevent a neural network from forgetting about the old data?}
+
+\solution
+
+Adding additional neurons, I guess?
+
+\spacepls
+
+\textit{Suppose that a neural network is designed for the task of classifying two different classes.
+What would be a suitable choice of activation function for such a network? Justify your answer.}
+
+\solution
+
+The hard limit activation function, of course.
+
+\spacepls
+
+\textit{Suppose that we have a perceptron with a weight vector $W$ and we create a new set of weights $W' = cW$ by scaling $W$ by some positive constant $c$.
+Assume that the bias is zero.
+If the perceptron now uses $W'$, how would this change affect its classification decisions? Justify your answer.}
+
+\solution
+
+Depending on the activation function, the result may be affected.
+
+\spacepls
+
+\textit{Suppose that we have a perceptron with a weight vector $W$ and we create a new set of weights $W' = c + W$ by adding some constant vector $c$ to $W$.
+Assume that the bias is zero.
+If the perceptron now uses $W'$, how would this change affect its classification decisions? Justify your answer.}
+
+\solution
+
+Once again, it depends on the activation function.
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+{\large \textbf{Perceptron's learning rule}}
+
+\spacepls
+
+\textit{Solve the following classification problem with the perceptron's learning rule.
+Apply each input vector in order, for as many repetitions as it takes to ensure that the problem is solved.
+Assume the initial weights and bias to be $W = [0,0]$ and $b = 0$.}
+
+\spacepls
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ccc}
+\toprule
+$x_1$ & $x_2$ & $y$ \\ \midrule
+2 & 2 & 0 \\
+1 & -2 & 1 \\
+-2 & 2 & 0 \\
+-1 & 1 & 1 \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\solution
+
+aa pls
+\end{homeworkProblem}
+\end{document}
