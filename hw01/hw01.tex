@@ -1,7 +1,7 @@
 \documentclass[titlepage, letterpaper, fleqn]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{fancyhdr} % fancy headers, of course!
-\usepackage{amsmath} % what do you think?
+\usepackage[fleqn]{amsmath} % what do you think?
 \usepackage{amsthm} % theorems!
 \usepackage{extramarks} % more cute things
 \usepackage{enumitem} % i'm not sure...
@@ -16,6 +16,8 @@
 \usepackage{tcolorbox}
 \usepackage{algpseudocode}
 \usepackage{csquotes}
+\usepackage{pifont} % http://ctan.org/pkg/pifont
+
 
 \topmargin=-0.45in
 \evensidemargin=0in
@@ -38,9 +40,13 @@
 % \newcommand{\qedpls}{\blacksquare}
 
 \renewcommand\qedsymbol{\(\blacksquare\)}
-\renewcommand{\ttdefault}{pcr} %so we can get both bold and tt fonts
+%\renewcommand{\ttdefault}{pcr} %so we can get both bold and tt fonts
 
 \newcommand{\bigO}{\mathcal{O}} %you should be inside a math environment
+
+\newcommand{\cmark}{\text{\ding{51}}}% checkmark
+\newcommand{\xmark}{\text{\ding{55}}}% x mark
+
 %
 % Header markings
 %
@@ -83,15 +89,15 @@
 \nobreak\extramarks{Exercise \arabic{homeworkProblemCounter}}{}\nobreak{}
 
 %Solution Environment
-% \newenvironment{solution}
-% {\renewcommand\qedsymbol{$\square$}\begin{proof}[Solution]}
-% {\end{proof}}
+\newenvironment{solution}
+{\renewcommand\qedsymbol{$\square$}\begin{proof}[Solution]}
+{\end{proof}}
 
 % Alias for the Solution section header
-\newcommand{\solution}{\vspace{2ex}\textbf{\large Solution}\vspace{2ex}}
+\newcommand{\sol}{\vspace{2ex}\textbf{\large Solution}\vspace{2ex}}
 
 %Alias for the new step section
-\newcommand{\steppy}[1]{\textbf{\large #1}}
+\newcommand{\steppy}[1]{\textbf{#1}}
 
 %
 % Homework Problem Environment
@@ -184,18 +190,21 @@ Xavier Fernando Cuauhtémoc Sánchez Díaz \\
 In order to account for this we can adapt our learning system to the new data by, for example, training on new examples.
 If the relationship between inputs and outputs for old examples has not changed, how can we prevent a neural network from forgetting about the old data?}
 
-\solution
+\sol
 
-Adding additional neurons, I guess?
+Assuming that the new data is way too different from those previous examples to create a generalization, a way to deal with this is to add more layers and adjusting the weights accordingly, so that a layer classifies a subset of the examples and another takes care of another subset.
+Complex models need more complex networks, of course.
 
 \spacepls
 
 \textit{Suppose that a neural network is designed for the task of classifying two different classes.
 What would be a suitable choice of activation function for such a network? Justify your answer.}
 
-\solution
+\sol
 
-The hard limit activation function, of course.
+The hard limit activation function or its symmetrical version, since we only need two values.
+The perceptron as a logical gate is a nice example.
+It uses hard limit and works as intended.
 
 \spacepls
 
@@ -203,9 +212,10 @@ The hard limit activation function, of course.
 Assume that the bias is zero.
 If the perceptron now uses $W'$, how would this change affect its classification decisions? Justify your answer.}
 
-\solution
+\sol
 
-Depending on the activation function, the result may be affected.
+Nothing happens, since the perceptron uses the hard limit activation function. Hard limit assigns non-negative values to 1, and negative values to 0.
+Therefore, any negative value multiplied by a positive constant will remain negative, and will still be classified as 0, while all positive values will remain positive when multiplied by a positive constant.
 
 \spacepls
 
@@ -213,9 +223,15 @@ Depending on the activation function, the result may be affected.
 Assume that the bias is zero.
 If the perceptron now uses $W'$, how would this change affect its classification decisions? Justify your answer.}
 
-\solution
+\sol
 
-Once again, it depends on the activation function.
+Assume that $c_i \gg W_i$ and that $W_i$ is a negative value and $c_i$ is a positive value.
+Therefore, $W'_i = c_i + W_i$ will be positive.
+A negative input $p_i$ would then be mapped to 0.
+
+Now assume $c_i \not \gg W_i$ and therefore $W'_i$ is negative.
+Hence, the same negative input $p_i$ would be mapped to 1, since $W_i p_i$ will be a positive value.
+This means that using no bias when summing a constant to a vector of weights will affect the results.
 
 \end{homeworkProblem}
 
@@ -244,8 +260,50 @@ $x_1$ & $x_2$ & $y$ \\ \midrule
 \end{tabular}
 \end{table}
 
-\solution
+\sol
 
-aa pls
+The output is calculated as $W\mathbf{p} + b$.
+The learning rule updates $W$ and $b$ with $W = W + e \mathbf{p}^T$ and $b = b + e$, respectively.
+The error is obtained as the difference of the expected output and the actual output.
+
+\steppy{1st epoch}
+
+\begin{align*}
+    1 \Rightarrow \quad & [0,0]\begin{bmatrix}2 \\ 2 \end{bmatrix} + 0 = 0 \mapsto 1 \quad \xmark \quad \therefore \quad e = 0 - 1 = -1 \\
+    \begin{split}
+      & W = [0,0] + (-1)[2, 2] = [-2, -2] \\
+      & b = 0 - 1 = -1
+    \end{split} \\
+    2 \Rightarrow \quad & [-2,-2]\begin{bmatrix}1 \\ -2 \end{bmatrix} - 1 = -2 + 4 -1 = 1  \mapsto 1 \quad \cmark \quad \therefore \quad e = 0\\
+    3 \Rightarrow \quad & [-2,-2]\begin{bmatrix}-2 \\ 2 \end{bmatrix} - 1  = 4 - 4 - 1 = -1 \mapsto 0 \quad \cmark \quad \therefore \quad e = 0\\
+    4 \Rightarrow \quad & [-2,-2]\begin{bmatrix}-1 \\ 1 \end{bmatrix} - 1  = 2 - 2 - 1 = -1 \mapsto 0 \quad \xmark \quad \therefore \quad e = 1 \\
+    \begin{split}
+      & W = [-2,-2] + (1)[-1, 1] = [-3, -1] \\
+      & b = -1 + 1 = 0
+    \end{split}
+    \end{align*}
+
+\pagebreak
+
+\steppy{2nd epoch}
+
+    \begin{align*}
+    5 \Rightarrow \quad & [-3,-1]\begin{bmatrix}2 \\ 2 \end{bmatrix} + 0  = -6 -2 + 0 = -8 \mapsto 0 \quad \cmark \quad \therefore \quad e = 0 \\
+    6 \Rightarrow \quad & [-3,-1]\begin{bmatrix}1 \\ -2 \end{bmatrix} + 0  = -3 + 2 = -1 \mapsto 0 \quad \xmark \quad \therefore \quad e = 1 \\
+    \begin{split}
+      & W = [-3,-1] + (1)[1, -2] = [-2, -3] \\
+      & b = 0 + 1 = 1
+    \end{split} \\
+    7 \Rightarrow \quad & [-2,-3]\begin{bmatrix}-2 \\ 2 \end{bmatrix} + 1 = 4 - 6 + 1 = -1 \mapsto 0 \quad \cmark \quad \therefore \quad e = 0 \\
+    8 \Rightarrow \quad & [-2,-3]\begin{bmatrix}-1 \\ 1 \end{bmatrix} + 1 = 2 -3 + 1 = 0 \mapsto 1 \quad \cmark \quad \therefore \quad e = 0
+    \end{align*}
+
+\steppy{3rd epoch}
+
+    \begin{align*}
+    9 \Rightarrow \quad & [-2,-3]\begin{bmatrix}2 \\ 2 \end{bmatrix} + 1 = -4 -6 + 1 = -9 \mapsto 0 \quad \cmark \quad \therefore \quad e = 0 \\
+    10 \Rightarrow \quad & [-2,-3]\begin{bmatrix}1 \\ -2 \end{bmatrix} + 1 = -2 + 6 + 1 = 5 \mapsto 1 \quad \cmark \quad \therefore \quad e = 0 \qed
+\end{align*}
+
 \end{homeworkProblem}
 \end{document}
