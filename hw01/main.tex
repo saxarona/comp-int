@@ -1,0 +1,309 @@
+\documentclass[titlepage, letterpaper, fleqn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr} % fancy headers, of course!
+\usepackage[fleqn]{amsmath} % what do you think?
+\usepackage{amsthm} % theorems!
+\usepackage{extramarks} % more cute things
+\usepackage{enumitem} % i'm not sure...
+\usepackage{multicol} % multicolumn...?
+\usepackage{amssymb} % more symbols
+\usepackage{MnSymbol} % moar symbols?
+\usepackage{booktabs} % cool looking tables
+\usepackage{tikz} %venn and shizzle
+\usepackage{mathrsfs} %math script for calligraphic scripting, I GUESS
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{algpseudocode}
+\usepackage{csquotes}
+\usepackage{pifont} % http://ctan.org/pkg/pifont
+
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+
+%
+% You should change this things~
+%
+
+\newcommand{\mahteacher}{José Carlos Ortiz Bayliss}
+\newcommand{\mahclass}{Computational Intelligence}
+\newcommand{\mahtitle}{\textsc{Homework 01}}
+\newcommand{\mahdate}{\today}
+
+\newcommand{\spacepls}{\vspace{5mm}}
+% \newcommand{\qedpls}{\blacksquare}
+
+\renewcommand\qedsymbol{\(\blacksquare\)}
+%\renewcommand{\ttdefault}{pcr} %so we can get both bold and tt fonts
+
+\newcommand{\bigO}{\mathcal{O}} %you should be inside a math environment
+
+\newcommand{\cmark}{\text{\ding{51}}}% checkmark
+\newcommand{\xmark}{\text{\ding{55}}}% x mark
+
+%
+% Header markings
+%
+
+\pagestyle{fancy}
+\lhead{01170065 - Xavier Sánchez}
+\chead{}
+\rhead{}
+\lfoot{}
+\rfoot{}
+
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+% \setlength\parskip{1.5pt}
+\setlength\parskip{1.5ex}
+
+
+%
+% Create Problem Sections (stolen directly from jdavis/latex-homework-template @ github!)
+%
+
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+\nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+\stepcounter{#1}
+\nobreak\extramarks{Problem \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\nobreak\extramarks{Exercise \arabic{homeworkProblemCounter}}{}\nobreak{}
+
+%Solution Environment
+\newenvironment{solution}
+{\renewcommand\qedsymbol{$\square$}\begin{proof}[Solution]}
+{\end{proof}}
+
+% Alias for the Solution section header
+\newcommand{\sol}{\vspace{2ex}\textbf{\large Solution}\vspace{2ex}}
+
+%Alias for the new step section
+\newcommand{\steppy}[1]{\textbf{#1}}
+
+%
+% Homework Problem Environment
+%
+% This environment takes an optional argument. When given, it will adjust the
+% problem counter. This is useful for when the problems given for your
+% assignment aren't sequential. See the last 3 problems of this template for an
+% example.
+%
+\newenvironment{homeworkProblem}[1][-1]{
+\ifnum#1>0
+\setcounter{homeworkProblemCounter}{#1}
+\fi
+\section{Problem \arabic{homeworkProblemCounter}}
+\setcounter{partCounter}{1}
+\enterProblemHeader{homeworkProblemCounter}
+}{
+\exitProblemHeader{homeworkProblemCounter}
+}
+
+%
+% Coloring of code listings
+%
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.98,0.98,0.98}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen},
+  keywordstyle=\bfseries\color{blue},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\footnotesize\ttfamily,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+%
+% My actual info
+%
+
+\title{
+\vspace{1in}
+\textbf{Tecnológico de Monterrey} \\
+\vspace{0.5in}
+\textmd{\mahclass} \\
+\vspace{0.5in}
+\large{\textit{\mahteacher}} \\
+\vspace{0.5in}
+\textsc{\mahtitle}\\
+\author{01170065  - MIT \\
+Xavier Fernando Cuauhtémoc Sánchez Díaz \\
+\texttt{xavier.sanchezdz@gmail.com}}
+\date{\mahdate}
+}
+
+\begin{document}
+
+\begin{titlepage}
+\maketitle
+\end{titlepage}
+
+%
+% Actual document starts here~
+%
+
+\begin{homeworkProblem}
+
+{\large \textbf{Answer the following questions}}
+
+\spacepls
+
+\textit{Data can change over time, in particular, we might observe different input/output relationships.
+In order to account for this we can adapt our learning system to the new data by, for example, training on new examples.
+If the relationship between inputs and outputs for old examples has not changed, how can we prevent a neural network from forgetting about the old data?}
+
+\sol
+
+Assuming that the new data is way too different from those previous examples to create a generalization, a way to deal with this is to add more layers and adjusting the weights accordingly, so that a layer classifies a subset of the examples and another takes care of another subset.
+Complex models need more complex networks, of course.
+
+\spacepls
+
+\textit{Suppose that a neural network is designed for the task of classifying two different classes.
+What would be a suitable choice of activation function for such a network? Justify your answer.}
+
+\sol
+
+The hard limit activation function or its symmetrical version, since we only need two values.
+The perceptron as a logical gate is a nice example.
+It uses hard limit and works as intended.
+
+\spacepls
+
+\textit{Suppose that we have a perceptron with a weight vector $W$ and we create a new set of weights $W' = cW$ by scaling $W$ by some positive constant $c$.
+Assume that the bias is zero.
+If the perceptron now uses $W'$, how would this change affect its classification decisions? Justify your answer.}
+
+\sol
+
+Nothing happens, since the perceptron uses the hard limit activation function. Hard limit assigns non-negative values to 1, and negative values to 0.
+Therefore, any negative value multiplied by a positive constant will remain negative, and will still be classified as 0, while all positive values will remain positive when multiplied by a positive constant.
+
+\spacepls
+
+\textit{Suppose that we have a perceptron with a weight vector $W$ and we create a new set of weights $W' = c + W$ by adding some constant vector $c$ to $W$.
+Assume that the bias is zero.
+If the perceptron now uses $W'$, how would this change affect its classification decisions? Justify your answer.}
+
+\sol
+
+Assume that $c_i \gg W_i$ and that $W_i$ is a negative value and $c_i$ is a positive value.
+Therefore, $W'_i = c_i + W_i$ will be positive.
+A negative input $p_i$ would then be mapped to 0.
+
+Now assume $c_i \not \gg W_i$ and therefore $W'_i$ is negative.
+Hence, the same negative input $p_i$ would be mapped to 1, since $W_i p_i$ will be a positive value.
+This means that using no bias when summing a constant to a vector of weights will affect the results.
+
+\end{homeworkProblem}
+
+\pagebreak
+
+\begin{homeworkProblem}
+{\large \textbf{Perceptron's learning rule}}
+
+\spacepls
+
+\textit{Solve the following classification problem with the perceptron's learning rule.
+Apply each input vector in order, for as many repetitions as it takes to ensure that the problem is solved.
+Assume the initial weights and bias to be $W = [0,0]$ and $b = 0$.}
+
+\spacepls
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ccc}
+\toprule
+$x_1$ & $x_2$ & $y$ \\ \midrule
+2 & 2 & 0 \\
+1 & -2 & 1 \\
+-2 & 2 & 0 \\
+-1 & 1 & 1 \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\sol
+
+The output is calculated as $W\mathbf{p} + b$.
+The learning rule updates $W$ and $b$ with $W = W + e \mathbf{p}^T$ and $b = b + e$, respectively.
+The error is obtained as the difference of the expected output and the actual output.
+
+\steppy{1st epoch}
+
+\begin{align*}
+    1 \Rightarrow \quad & [0,0]\begin{bmatrix}2 \\ 2 \end{bmatrix} + 0 = 0 \mapsto 1 \quad \xmark \quad \therefore \quad e = 0 - 1 = -1 \\
+    \begin{split}
+      & W = [0,0] + (-1)[2, 2] = [-2, -2] \\
+      & b = 0 - 1 = -1
+    \end{split} \\
+    2 \Rightarrow \quad & [-2,-2]\begin{bmatrix}1 \\ -2 \end{bmatrix} - 1 = -2 + 4 -1 = 1  \mapsto 1 \quad \cmark \quad \therefore \quad e = 0\\
+    3 \Rightarrow \quad & [-2,-2]\begin{bmatrix}-2 \\ 2 \end{bmatrix} - 1  = 4 - 4 - 1 = -1 \mapsto 0 \quad \cmark \quad \therefore \quad e = 0\\
+    4 \Rightarrow \quad & [-2,-2]\begin{bmatrix}-1 \\ 1 \end{bmatrix} - 1  = 2 - 2 - 1 = -1 \mapsto 0 \quad \xmark \quad \therefore \quad e = 1 \\
+    \begin{split}
+      & W = [-2,-2] + (1)[-1, 1] = [-3, -1] \\
+      & b = -1 + 1 = 0
+    \end{split}
+    \end{align*}
+
+\pagebreak
+
+\steppy{2nd epoch}
+
+    \begin{align*}
+    5 \Rightarrow \quad & [-3,-1]\begin{bmatrix}2 \\ 2 \end{bmatrix} + 0  = -6 -2 + 0 = -8 \mapsto 0 \quad \cmark \quad \therefore \quad e = 0 \\
+    6 \Rightarrow \quad & [-3,-1]\begin{bmatrix}1 \\ -2 \end{bmatrix} + 0  = -3 + 2 = -1 \mapsto 0 \quad \xmark \quad \therefore \quad e = 1 \\
+    \begin{split}
+      & W = [-3,-1] + (1)[1, -2] = [-2, -3] \\
+      & b = 0 + 1 = 1
+    \end{split} \\
+    7 \Rightarrow \quad & [-2,-3]\begin{bmatrix}-2 \\ 2 \end{bmatrix} + 1 = 4 - 6 + 1 = -1 \mapsto 0 \quad \cmark \quad \therefore \quad e = 0 \\
+    8 \Rightarrow \quad & [-2,-3]\begin{bmatrix}-1 \\ 1 \end{bmatrix} + 1 = 2 -3 + 1 = 0 \mapsto 1 \quad \cmark \quad \therefore \quad e = 0
+    \end{align*}
+
+\steppy{3rd epoch}
+
+    \begin{align*}
+    9 \Rightarrow \quad & [-2,-3]\begin{bmatrix}2 \\ 2 \end{bmatrix} + 1 = -4 -6 + 1 = -9 \mapsto 0 \quad \cmark \quad \therefore \quad e = 0 \\
+    10 \Rightarrow \quad & [-2,-3]\begin{bmatrix}1 \\ -2 \end{bmatrix} + 1 = -2 + 6 + 1 = 5 \mapsto 1 \quad \cmark \quad \therefore \quad e = 0 \qed
+\end{align*}
+
+\end{homeworkProblem}
+\end{document}

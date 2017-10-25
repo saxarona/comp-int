@@ -1,0 +1,229 @@
+\documentclass[titlepage, letterpaper, fleqn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr} % fancy headers, of course!
+\usepackage[fleqn]{amsmath} % what do you think?
+\usepackage{amsthm} % theorems!
+\usepackage{extramarks} % more cute things
+\usepackage{enumitem} % i'm not sure...
+\usepackage{multicol} % multicolumn...?
+\usepackage{amssymb} % more symbols
+\usepackage{MnSymbol} % moar symbols?
+\usepackage{booktabs} % cool looking tables
+\usepackage{tikz} %venn and shizzle
+\usepackage{mathrsfs} %math script for calligraphic scripting, I GUESS
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{tcolorbox}
+\usepackage{algpseudocode}
+\usepackage{csquotes}
+\usepackage{pifont} % http://ctan.org/pkg/pifont
+
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+
+%
+% You should change this things~
+%
+
+\newcommand{\mahteacher}{José Carlos Ortiz Bayliss}
+\newcommand{\mahclass}{Computational Intelligence}
+\newcommand{\mahtitle}{\textsc{Homework 02}}
+\newcommand{\mahdate}{\today}
+
+\newcommand{\spacepls}{\vspace{5mm}}
+% \newcommand{\qedpls}{\blacksquare}
+
+\renewcommand\qedsymbol{\(\blacksquare\)}
+%\renewcommand{\ttdefault}{pcr} %so we can get both bold and tt fonts
+
+\newcommand{\bigO}{\mathcal{O}} %you should be inside a math environment
+
+\newcommand{\cmark}{\text{\ding{51}}}% checkmark
+\newcommand{\xmark}{\text{\ding{55}}}% x mark
+
+%
+% Header markings
+%
+
+\pagestyle{fancy}
+\lhead{01170065 - Xavier Sánchez}
+\chead{}
+\rhead{}
+\lfoot{}
+\rfoot{}
+
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+% \setlength\parskip{1.5pt}
+\setlength\parskip{1.5ex}
+
+
+%
+% Create Problem Sections (stolen directly from jdavis/latex-homework-template @ github!)
+%
+
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+\nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+\stepcounter{#1}
+\nobreak\extramarks{Problem \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\nobreak\extramarks{Exercise \arabic{homeworkProblemCounter}}{}\nobreak{}
+
+%Solution Environment
+\newenvironment{solution}
+{\renewcommand\qedsymbol{$\square$}\begin{proof}[Solution]}
+{\end{proof}}
+
+% Alias for the Solution section header
+\newcommand{\sol}{\vspace{2ex}\textbf{\large Solution}\vspace{2ex}}
+
+%Alias for the new step section
+\newcommand{\steppy}[1]{\textbf{#1}}
+
+%
+% Homework Problem Environment
+%
+% This environment takes an optional argument. When given, it will adjust the
+% problem counter. This is useful for when the problems given for your
+% assignment aren't sequential. See the last 3 problems of this template for an
+% example.
+%
+\newenvironment{homeworkProblem}[1][-1]{
+\ifnum#1>0
+\setcounter{homeworkProblemCounter}{#1}
+\fi
+\section{Problem \arabic{homeworkProblemCounter}}
+\setcounter{partCounter}{1}
+\enterProblemHeader{homeworkProblemCounter}
+}{
+\exitProblemHeader{homeworkProblemCounter}
+}
+
+%
+% Coloring of code listings
+%
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.98,0.98,0.98}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen},
+  keywordstyle=\bfseries\color{blue},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\footnotesize\ttfamily,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+%
+% My actual info
+%
+
+\title{
+\vspace{1in}
+\textbf{Tecnológico de Monterrey} \\
+\vspace{0.5in}
+\textmd{\mahclass} \\
+\vspace{0.5in}
+\large{\textit{\mahteacher}} \\
+\vspace{0.5in}
+\textsc{\mahtitle}\\
+\author{01170065  - MIT \\
+Xavier Fernando Cuauhtémoc Sánchez Díaz \\
+\texttt{xavier.sanchezdz@gmail.com}}
+\date{\mahdate}
+}
+
+\begin{document}
+
+\begin{titlepage}
+\maketitle
+\end{titlepage}
+
+%
+% Actual document starts here~
+%
+
+\begin{homeworkProblem}
+
+{\large Design a multilayer perceptron that  correctly classifies the following boolean formula: \[(w \vee x) \vee (y \wedge z)\]
+Define the weights of the network by inspections.}
+
+\sol
+
+\[W_1 =
+\begin{bmatrix}
+1 & 1 & 0 & 0 \\
+0 & 0 & 1 & 1
+\end{bmatrix}, \quad
+b = [-1, -2], \quad W_2 = [1, 1],\quad b_2 = -1\]
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{01-gate.pdf}
+  \caption{Classifier for Exercise 1}
+  \label{fig:gate}
+\end{figure}
+
+\end{homeworkProblem}
+
+
+\begin{homeworkProblem}
+{\large Design a multilayer perceptron that approximates the function described in~\ref{eq:01} in the interval $[-1, 1]$.
+Define the weights of the network by inspection.
+\begin{equation}
+\label{eq:01}
+  a =
+\begin{cases}
+0 & n < 0 \\
+1 & 0 \leq n < 0.5 \\
+2 & n \geq 0.5
+\end{cases}
+\end{equation}
+}
+  
+\end{homeworkProblem}
+  
+
+
+aa
+
+Fig3 \[W_1 = \begin{bmatrix}1 \\ 0.5 \end{bmatrix},
+b = [-0.5, -0.5], W_2 = [-1, -1], b_2 = 0\]
+\end{document}

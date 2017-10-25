@@ -1,0 +1,600 @@
+\documentclass[titlepage, letterpaper, oneside]{book}
+\usepackage[utf8]{inputenc}
+%\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{extramarks}
+\usepackage{enumitem}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{algpseudocode}
+\usepackage{lettrine}
+\usepackage{staves}
+\usepackage{lmodern}
+\usepackage{csquotes}
+\usepackage{marginnote}
+\usepackage{yfonts}
+\usepackage{etoolbox}
+\usepackage{algorithm}
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+\setlength{\parskip}{1ex}
+%\setlength{\parindent}{0ex}
+
+%
+% You should change this things~
+%
+
+\newcommand{\mahclass}{Evolutionary Computation \\also known as \\ Witchery Optimization}
+\newcommand{\mahtitle}{Study Guide:\\a closer look to GAs' black magicks}
+\newcommand{\mahdate}{\today}
+\newcommand{\spacepls}{\vspace{5mm}}
+\newcommand{\magicword}[1]{%
+\textbf{#1}\marginnote{\textfrak{#1}}}
+\newtheorem{theorem}{Theorem}
+%\renewcommand{\LettrineFontHook}{\color[gray]{0.5}}
+
+
+% algorithmicx setttings (lines)
+%
+
+\algrenewcommand\alglinenumber[1]{\footnotesize #1}
+
+\makeatletter
+% start with some helper code
+% This is the vertical rule that is inserted
+\newcommand*{\algrule}[1][\algorithmicindent]{%
+  \makebox[#1][l]{%
+    \hspace*{.2em}% <------------- This is where the rule starts from
+    \vrule height .75\baselineskip depth .25\baselineskip
+  }
+}
+
+\newcount\ALG@printindent@tempcnta
+\def\ALG@printindent{%
+    \ifnum \theALG@nested>0% is there anything to print
+    \ifx\ALG@text\ALG@x@notext% is this an end group without any text?
+    % do nothing
+    \else
+    \unskip
+    % draw a rule for each indent level
+    \ALG@printindent@tempcnta=1
+    \loop
+    \algrule[\csname ALG@ind@\the\ALG@printindent@tempcnta\endcsname]%
+    \advance \ALG@printindent@tempcnta 1
+    \ifnum \ALG@printindent@tempcnta<\numexpr\theALG@nested+1\relax
+    \repeat
+    \fi
+    \fi
+}
+% the following line injects our new indent handling code in place of the default spacing
+\patchcmd{\ALG@doentity}{\noindent\hskip\ALG@tlm}{\ALG@printindent}{}{\errmessage{failed to patch}}
+\patchcmd{\ALG@doentity}{\item[]\nointerlineskip}{}{}{} % no spurious vertical space
+% end vertical rule patch for algorithmicx
+\makeatother
+
+%
+% Header markings
+%
+
+%\pagestyle{headings}
+% \lhead{}
+% \chead{}
+% \rhead{}
+% \lfoot{}
+% \rfoot{Study Guide: a closer look to GAs' black magicks}
+
+
+% \renewcommand\headrulewidth{0.4pt}
+% \renewcommand\footrulewidth{0.4pt}
+% \renewcommand{\familydefault}{\sfdefault} %The sans-serif font and the like
+\DeclareMathOperator*{\argmax}{argmax}
+
+% Alias for the Solution section header
+\newcommand{\solution}{\textbf{\large Solución}}
+
+%Alias for the new step section
+\newcommand{\steppy}[1]{\textbf{\large #1}}
+
+%
+% My actual info
+%
+
+\title{
+\vspace{1in}
+\textbf{Tecnológico de Monterrey} \\
+\vspace{0.5in}
+\textmd{\mahclass} \\
+\vspace{0.5in}
+\textsc{\mahtitle}
+\author{01170065  - MIT \\
+Sax \\
+\texttt{xavier.sanchezdz@gmail.com}}
+\date{\mahdate}
+}
+
+\begin{document}
+
+\frontmatter
+
+% \begin{titlepage}
+    \maketitle
+% \end{titlepage}
+
+%
+% Actual document starts here~
+%
+
+% Topics should be
+% Black Box optimization
+% Performance of Black Box Optimization
+% GAs: the how and whys
+% What is the minimal deceptive problem?
+% Schemata: the black magick formulae
+% Practical aspects of GAs
+% Crossover: birth of the unholy
+% Selection: the path of the chosen ones
+% Niche formation: sharing, crowding and other methods to ensure a quick death
+% Real-valued GAs
+% Genetic Programming
+
+\chapter{Preface}
+\label{ch:pre}
+
+\lettrine[lines=4]{H}{ere} we are, once again in the prelude of doomsday.
+But fear not, my friend, since you have found a source of enlightenment, the light at the end of the tunnel; a guide for these wretched times.
+In this guide, you'll find the clues to understand the Witchery Optimization, also known as Evolutionary Computation.
+This guide covers GAs specifically. Don't expect to find all wisdom from a single source.
+In hopes for you to better study the significant texts, I have prepared a list of magic words which you can find in the margin of each page.
+Be sure to look for these words of power, as they are key to understanding these occult arts.
+
+The spirits are calling, so let's get to it...
+
+\vspace{37ex}
+
+\begin{center}
+{\huge \staveXII \staveXLIX  \staveXLV \staveVI \staveLXII}
+\end{center}
+
+
+\mainmatter
+
+\chapter{Black Box Optimization}
+\label{ch:blackbox}
+
+\lettrine[lines=4]{T}{he} first step in our exploration through the dark fields of Witchery Optimization is to understand what the word \magicword{optimization} means.
+In mathematics, this arcane term is used when looking for a value (or a set of values), but not just any value--the BEST value.
+The word ``best'' is quite weak. The best spell depends on your target, don't forget.
+Therefore, this word, ``best'' will be replaced by a stronger word of power: \magicword{optimal}.
+An optimal value is the ``best'' value there exists for a given function.
+This ``best'' condition is determined by certain criteria, but we usually look for the \magicword{maximum} or the \magicword{minimum} value.
+
+When optimizing, however, you may want to look not for a value, but instead the arrangement of all factors that actually make that value achievable--the ingredients for the concoction.
+This lead us to two different branches of optimization. For example:
+
+\begin{itemize}
+	\item When you look for a mixture of ingredients for your poisons.
+	\item When you look for the magic words of a summoning spell.
+\end{itemize}
+
+How are these different?
+When looking for a mixture, you only care about the amounts; the values. When Shavronne transformed Brutus, the incarcerator, she used a concoction to accelerate the implantation process of the virtue gems. Malachai suggested the following:
+
+\blockquote[Malachai, The Warden's Chambers, Path of Exile]{Dear Shavronne,
+You have certainly had your work cut out for you with Lioneye's Legion. Do not concern yourself with Marceus' complaints. Our Emperor is fully aware of the General's fickle nature.
+As to your need to accelerate the implantation process, I can recommend a quite simple alteration. Dip the gem in a boiling solution of six parts blood and one part thaumetic sulphite for no more than thirteen seconds. Any longer and you invite the crystal's wrath.}
+
+Finding these specific quantities is, indeed, an optimization problem of the first kind.
+Humans often call it \magicword{parametric optimization}, as it varies the parameters of a function in order for the resulting value (the output of the function) to be optimal.
+How much blood and how much thaumetic sulphite do I need to create the perfect acceleration solution?
+
+If we were to look for an optimization problem of the second type, a perfect example is a spell. Back in the late '90s, when web pages were actually \textsc{HTML} documents loaded on multiple frames and everybody used animated GIFs over purple image-based backgrounds and yellow text (I did, and probably you too)--back in those days, Morbid Angel had a crazy web page listing some incantations. The first paragraph of the first incantation listed, the \textit{Affirmation of the Most High}, reads:
+
+\begin{displayquote}[Affirmation of the Most High, 1999]
+I Am The One Who Is \\
+The Alpha Omega I Am \\
+My Way So Complete In Itself \\
+For From My Left Hand I Produce Fire \\
+And From My Right Does The Waters Pour \\
+From My Breath The Perfect Pure-Word Issues Forth \\
+Manifesting My True-Will And Grounding My Wondrous Dreams
+
+I Assemble Myself By These Most Magical Names
+
+One\\
+CHTHHULHU\\
+I AM\\
+I AM THE LIVING ACTIVE GOD
+
+Two\\
+HABSU\\
+I WILL\\
+MY TRUE-WILL CAN NOT BE DENIED
+
+Three\\
+AMAH-USHUMGAL-ANNA\\
+I CREATE\\
+I CREATE MYSELF AS WELL AS MY WORLD (...)
+\end{displayquote}
+
+Why would this conjuration be an optimization problem? It's simple if we look at it from another perspective.
+There's a list of defined words, special words: \textit{Alpha, Omega, Fire, Wondrous, Chthhulhu, Habsu, Amah-Ushumgal-Anna} and so on.
+However, these words can't be spoken randomly, in any order we want.
+There's an specific order so that the actual summoning takes place.
+A certain order of the words may result in summoning the wrong being, or even worst.
+Therefore, one looks to find the best ordering of a set of objects (in this case, words): one which yields the best results--the optimal.
+This kind of optimization is called \magicword{combinatorial optimization}.
+
+Now, the term \textit{black box}... what does it mean?
+A Black box is a concept--an abstract construct which consists of box that is \textit{black}: everything inside the box is unknown, obscured, ignored and forgotten.
+Hence, the \magicword{black box} optimization refers to an optimization process where the internal procedures are ignored, and the important aspects are just the inputs and outputs.
+
+\section*{Definitions and Search Strategies}
+\label{sec:blackbox-def}
+
+To formalize a magic vocabulary, we should define certain concepts.
+Concepts which may seem easy for those experimented in the arts, but that will surely help novice occultists.
+
+\begin{description}
+	\item[Search space] \hfill \\
+	The \magicword{search space} is the set of all values that a variable can take, i.e. its domain.
+	\item[Trial] \hfill \\
+	A \magicword{trial} is a single function evaluation. In math, it looks something like $f(x=x_0)$, when evaluating $f(x)$ at a given value, $x_0$.
+\end{description}
+
+Searching is not just moving things around until you find something.
+Depending on what you're looking for, it may be better to search in the fridge, or maybe under the bed.
+Perhaps finding a certain object will give you clues on where our objective is.
+When doing optimization, we need to have a measure of how well or value is.
+This measure is called the \magicword{objective function}. Evaluating the objective function will give us a result to which we can compare how we are doing.
+
+We covered some searching strategies in class.
+Most of them are terrible, to be honest, but that's not our concern.
+Let's review them.
+
+The first searching algorithm is \magicword{sequential search}, which (you guessed it) searches sequentially in the search space until it finds what it needs.
+The worst case is to find it in the last space you checked, so forget about this approach for complex problems where the search space is gigantic.
+
+Another search strategy covered in our lessons was \magicword{random search}, which as the names suggests, searches randomly through the search space. More or less like sequential search, with the difference that you may luckily run into your goal even if it's in the last position you would have checked if going sequentially.
+Nevertheless, the worst case for this approach is to find what you're looking for in the last space you check, assuming you are cursed and have a terrible luck.
+
+A third approach to searching is \magicword{local search}, which looks in the vicinity of a space and looks for clues to guide the searching process.
+If a space near me is better than the space I'm currently standing on, then I'll move to that space, right?
+Well, this works if you have perfect vision and there are no obstruction of what looks better.
+This behavior may lead to find something that looks good to us standing there, but look terrible compared to the nameless ones who watch from above and have a complete view of the terrain.
+Finding something apparently good (when it's not) is referred to as finding a \magicword{local optimum}---there's no better place around here.
+But surely there's a better place somewhere else where we can't see it.
+
+As a final note to the chapter, I'd like to support the claims or Professor Valenzuela: there exists lots of optimization algorithms which do the same thing, they just carry funny names around.
+Be on the lookout, as you may run into one of these.
+Do not be deceived by the well-looking glitter of these spells!
+
+\spacepls
+
+\begin{center}
+{\huge \staveXXIII}	
+\end{center}
+
+
+
+\chapter{Performance of Blackbox Optimization}
+\label{ch:blackbox-performance}
+
+While working on your Thesis, you probably stumbled upon texts by Carla Gomes, Bart Selman, Kate Smith-Miles or David Wolpert and William Macready.
+These authors have worked through years with the notion that no algorithm is better than other for ALL problems.
+If you compared two algorithms, they would behave almost the same.
+However, some algorithms may be better than other for a given problem, or in a certain field.
+What can we use to make address this behavior of `being better'?
+In magicks, one could compare power, mana cost, clear speed, or some other factors.
+For algorithms, the same thing applies.
+Here's a list of conventional measures for algorithms.
+
+\begin{description}
+	\item[Simplicity] \hfill \\
+	\magicword{Simplicity} means easy to implement and requiring less user intervention.
+	\item[Memory use] \hfill \\
+	The \magicword{memory use} refers to less requirements of resources.
+	\item[Tractability] \hfill \\
+	An algorithm that scales appropriately with problem size is a good algorithm. An \magicword{intractable} problem is one that won't be solved optimally if the number of variables is huge.
+	\item[Speed] \hfill \\
+	Less function evaluations to find a quality solution is what we look for when referring to \magicword{speed} in an algorithm.
+	\item[Solution quality] \hfill \\
+	How's the \magicword{quality of proposed solutions} if the algorithms runs several times?
+	\item[Repeatability] \hfill \\
+	If the algorithm is run several times, does it find similar results with respect to speed and solution quality? An algorithm that complies with these requirements complies with the \magicword{repeatability} measure.
+\end{description}
+
+It is important to note that what we occultists use the most is a mix of the last three: Speed, Solution quality and Repeatability.
+When reporting behavior of an algorithm, as reporting DPS calculations, for example, you should do a fine comparison.
+No comparison is complete if you compare with partial results.
+Always include the best result you've got, remember those critical hits you executed.
+And if you can, include an average and a standard deviation of the sample of hits: what's my average damage per second and how much does it vary from 1 hit to another hit.
+
+This is a short chapter, but I'm sure you can get the idea of how to use measures for algorithms. Just as you would for your spell damage. \staveXII
+
+\chapter{Genetic Algorithms: Witchery Optimizers}
+
+Genetic Algorithms (or GAs, from now on) are methods inspired in natural evolution.
+These methods are based on natural metaphors in order to try to replicate what nature does best: find solutions to real-life problems in any way it can.
+The idea of having nature-based methods is to achieve a more \magicword{graceful degradation} of the system over time, to make it robust in order to endure different approaches in different fields of knowledge.
+These characteristics make GAs \magicword{fault tolerant}, and in some way, intelligent.
+
+GAs are stochastic search methods based on the mechanics of natural selection and the Darwinian idea of survival according to fitness.
+One of the trademarks of GAs is the fact that solutions are \textit{strings} in a \magicword{reduced alphabet} (usually binary) that look like real life chromosomes.
+
+Some jargon is used to denote parts of the GA. The set of characteristics, represented in a binary string is called the \magicword{genotype}.
+This specific configuration of ones and zeros is specific to a single individual, and thus is referred to as the \magicword{chromosome}.
+This chromosome should go to a decoding box, where the parameters are interpreted and converted to a value (usually denoted by $x$).
+This $x$ value, how the chromosome looks like, is called \magicword{phenotype}.
+The phenotype is then used as an input in our black box, which then generates an output.
+This output is, of course, a function evaluation---the evaluation of an individual, how good it is; we call it its \magicword{fitness}.
+
+This all process is done in an iterative manner, without us actually knowing what is happening inside the black box.
+And it works, wonders.
+This is why we refer to them as witchery optimizers.
+Evolutionary computation works under really harsh conditions, just as witchery.
+
+The simplest GA (the one that we will cover in this guide) is called the \magicword{Simple Genetic Algorithm}, and looks something like the following.
+
+\begin{algorithm}
+\caption{Simple Genetic Algorithm}
+\label{alg:sga}
+\begin{algorithmic}
+	\State Create initial population
+	\Repeat
+		\State Selection (according to fitness)
+		\State Crossover of couples
+		\State Mutation of offspring
+	\Until{termination criteria}
+\end{algorithmic}
+\end{algorithm}
+
+\pagebreak
+
+I guess solving something by hand is easier. Just focus, my fellow apprentice, and you'll find the way in this dark path. Remember, try to report the following:
+
+\begin{itemize}
+	\item ID of an individual.
+	\item Its chromosome, i.e. its binary string.
+	\item The phenotype, i.e. the $x_i$ value.
+	\item Their fitness, i.e. its function evaluation $f(x_i)$.
+\end{itemize}
+
+It also may be a good idea to present a \magicword{normalized fitness} for the
+whole population. Anyway, let's break down each step of the spell, shall we?
+
+\section*{Create Initial Population}
+\label{sec:init-pop}
+
+Population is created randomly in most cases. \staveXXVIII
+
+
+\section*{Selection, Crossover and Mutation}
+\label{sec:selection}
+
+Individuals are evaluated and reproduced according to their fitness.
+Thing is, there are many ways to select who will reproduce.
+The easier thing to do is to do a \magicword{proportional selection}, which will give more reproductive opportunities to the fittest individuals, and less for those who are far from being the best in the population.
+
+\staveLII
+
+Parents who are selected are crossed via \magicword{crossover}. Their genetic material (the genotype) is exchanged.
+Then, a random position in the chromosome is selected to \textit{split} the genotype in two.
+This point is referred to as the \magicword{crossover point}.
+For example, assuming two strings, let's say 11111 and 00000 with crossover point at position 4, then the two new offspring would be 11110 and 00001.
+
+In a classical GA, individuals always replace their parents. No individual coexists with its offspring, so a population of $n$ individuals will yield $n$ new individuals for the next generation.
+This new population will go throughout a \magicword{mutation} process, where each bit can change with a really low probability $p_m$.
+
+\section*{Schemata}
+\label{sec:schemata}
+
+The actual power of Genetic Algorithms lies in the way how it interprets the genotype in the chromosomes.
+Looking at a chromosome, one can detect certain \textit{patterns}.
+These patterns are called \magicword{schemata}. A single schema is a bit pattern where the character * can be used as a wild card.
+This means that the pattern *010* can mean either 00100, 00101, 10100 and 10101.
+As a side note, the binary alphabet is preferred as the encoding language for a GA, since the amount of schemata in a single $l$-features string is maximal: $2^l$ possible schemata.
+
+Then we have some key definitions of these dark magicks. Take note:
+
+\begin{description}
+	\item[Defining length] \hfill \\
+	The \magicword{defining length} of a schema $H$ is denoted as $\delta(H)$ and its equal to the number of positions between first and last defined positions in the schema.
+	\item[Order] \hfill \\
+	The \magicword{order of a schema} is the number of defined positions, i.e. those bits which are not stars. It is denoted with $o(H)$.
+\end{description}
+
+And now we have a crazy, but simple formula. Try to remember what it is.
+
+\[m(H,t+1) = m(H,t) \frac{f(H)}{\bar{f}}\]
+
+where $m(H,t)$ is the number of individuals that belong to the schema $H$ in generation $t$,
+$f(H)$ is the average fitness of individuals in $H$
+and $\bar{f}$ is the average population fitness.
+
+Therefore, the division $\frac{f(H)}{\bar{f}}$ is a ratio of how well are the schemata individuals over the population fitness: how fit are the individuals in schema $H$ compared to the whole population.
+
+It is important to note that crossover is usually a schema destroyer!
+A \magicword{schema survives crossover} if the cross site does not fall within its defining length.
+There are another ways for a schema to survive.
+Long schemata, are prone to being broken. However, if there are a lot of stars in the middle, it will much likely survive.
+On the other hand, if one parent is complementary to a schema, then with high probability one of the offspring will be a representative of H if the crossover falls outside the defining length of said schema.
+The offspring will not carry the schema if the crossover point falls inside its defining length, even if one parent is complementary to the schema.
+
+There are other numerous useful formulae that you may use. Some of them are really easy to even deduce.
+
+The \magicword{crossover sites} in a chromosome can be determined by the following ultra-easy formula:
+
+\[l - 1\]
+
+Remember that $l$ is the length of a given chromosome.
+
+Now, the \magicword{crossover sites that break the schema} can be determined using the defining length, $\delta(H)$.
+
+The \magicword{probability of breaking the schema} can be viewed as a ratio:
+
+\[\frac{\delta(H)}{l-1}\]
+
+Makes sense, right? The probability depends on how many cross-sites break $H$ over how many cross-sites exist. Simple, as you and me mere mortals.
+
+Now, the probability of a \magicword{crossover breaking the schema}, let's call it $P(\mathfrak{cbs})$and listen carefully, not a site, but the whole crossover process, is the following:
+
+\[P(\mathfrak{cbs}) \leq p_c \frac{\delta(H)}{l-1}\]
+
+Makes sense! Another way to see this is to think of it as the probability of a schema NOT surviving crossover. It's exactly the same.
+
+And hence, the probability of a schema surviving crossover is its inverse:
+
+\[P_{sc} \geq 1 - p_c \frac{\delta(H)}{l-1}\]
+
+Now, let's talk about mutation!
+These formulas are actually pretty easy, as they can be deduced.
+Use the power of your mind!
+
+The \magicword{probability of not mutating} a position is the inverse of mutating a position, so it is denoted as
+
+\[1 - p_m\]
+
+If you were to find out the probability of not mutating two positions, then it would be the same, multiplied by itself; or squared, whatever.
+What about 3 positions? Then cubed. And so on, until you get the general \magicword{probability of surviving mutation}:
+
+\[p_{sm} = (1 - p_m)^{o(H)}\]
+
+Remember that $o(H)$ is the order of schema $H$.
+Through complex machinations, scholars have come to the following generalization:
+
+\[p_{sm} \approx 1 - o(H)p_m \]
+
+This means that the probability of a schema surviving mutation is approximately 1 minus the order of said schema multiplied by the mutation probability. Makes sense, as it is an infinite series so yeah.
+
+This was the each of the phases applied one by one. What if we mix them? We end up with a huge formula which looks monstrous, but makes sense!
+Scholars have also determined that some of the terms can be ignored, so they are already removed from everything.
+The final \magicword{schema theorem} is as follows:
+
+\begin{theorem}
+\[m(H, t+1) \geq m(H,t) \frac{f(H)}{\bar{f}}\left[1 - p_c \frac{\delta(H)}{l-1}  - p_m o(H) \right]\]
+\end{theorem}
+
+Which is simple, just a union of the selection, crossover and mutation processes: the whole GA.
+It is important to note that \magicword{some schemata are more favored} than others in a GA.
+Schemata with high evaluations are preferred. Schemata with a small order are also preferred. Schemata with short defining lengths are favored.
+This is how the magick works!
+
+\section*{Two-armed bandit problem}
+\label{sec:two-armed}
+
+An abstraction of a real life problem.
+A slot machine with two Arms, $A,B$. We know their means $\mu_a, \mu_b$ and their variances $\sigma^2_a, \sigma^2_b$, but we don't know which arm is $A$ and which arm is $B$.
+We should design a strategy that maximizes the expected payment.
+There are some crazy maths behind this, but we won't cover that in this booklet.
+
+
+\chapter{The Minimal Deception Problem (MDP)}
+\label{ch:mdp}
+
+A \magicword{deceptive problem} is a problem in which the GA leads to the complement of the optimum, i.e. the worst.
+The objective was to find a relation between deception and GA-hardness, and thus be able to create new algorithms that solve deceptive problems.
+The minimal deceptive problem was reduced to two significant bits, so the relevant schemata are two-digits binaries: 00, 01, 10, 11.
+
+Assuming that 11 is the optimum, some optimality conditions were worked out, and experiments were carried out. Seems like \magicword{MDP is not GA-hard} at all!
+
+Then they tried using three bits, and the GA solved it.
+Then 4 bits, and the GA solved it.
+And then they used \magicword{concatenation}, where the problems were joint together, and the GA solved them.
+And finally, they used interlaced problems: they created a \magicword{linkage} between 10, 3-bit completed problems, so that the actual function to optimize would be $\sum\limits_{i=1}^10 f_i(x_i,x_{i+10},x_{i+20})$, and the GA did not solve them.
+
+Since then, a bunch of other algorithms were designed to solve these problems, for example:
+
+\begin{itemize}
+	\item fmGA: fast messy GA
+	\item LLGA: Linkage Learning GA
+	\item BOA: Bayesian Optimization Algorithm
+	\item hBOA: hierarchical Bayesian Optimization Algorithm
+\end{itemize}
+
+These algorithms make their magic in $O(l^b)$, where $b<2$, for a constant deceptive order.
+A quick chapter, take a deep breath.
+
+\chapter{Channeling Schemata in visual form}
+\label{ch:schemata}
+
+
+How do you represent schemata? There are numerous ways.
+One of the best, imo, is using \magicword{hyperplanes}.
+Of course, it works only for small solution spaces!
+You draw a hyper-cube, using each vertex as a defined schema.
+A line between two vertexes is a schema with a star, and a whole `face' of the cube is a schema with two stars.
+Remember a star covers one dimension.
+
+Some others use \magicword{partitions} when looking at a one-variable functions:
+Draw a 2D-plot with the possible schemata in the abscissas and a membership function $\mu_H(x)$ on the ordinates, and mark those which belong to the schema.
+
+Another way to represent schemata is using a \magicword{Venn diagram}, which resembles more a pie chart or the like, but you get the idea.
+It's not that difficult, anyway.
+
+Schemata can also be represented using a \magicword{Karnaugh-maps}, where intersections have function evaluations if you prefer, and then you color those intersections affected by a schemata.
+Remember that K-maps use the Gray binary notation: 3 and 4 interchange their places in normal binary to save effort, so an ordered count from 0 to 3 in binary would be 00, 01, 11 and 10.
+
+Easy stuff! \staveXLVII
+
+\chapter{Practical applications of the use of GAs Magicks}
+\label{ch:practical}
+
+Sometimes you need to do OTHER things with GAs. For example, what about \magicword{minimization} problems?
+If you need to minimize, the most common approach is to create an additional fitness function, something like this:
+
+\[f'(x) = \begin{cases}
+C_{\max} - f(x_i), & f(x_i) < C_{\max} \\
+0, & \text{otherwise}
+\end{cases}
+\]
+
+This \magicword{adjusted fitness} is the one over which you select individuals for crossover. $C_{\max}$ can be either a really large value,
+the maximum evaluation in the last $k$ generations (assuming $k$ is a positive integer, of course) or the maximum evaluation in the present generation, which seems more appropriate.
+
+Another useful application is when one is to map \magicword{real numbers} to integers (which are then encoded as chromosomes). This is tricky, but one of the ways to do it is using the following formulae:
+
+\[x_{\text{int}} = \left\lfloor (2^l - 1) \frac{x - x_{\min}}{x_{\max} - x_{\min}} \right\rfloor\]
+
+And solving for $x_i$ is
+
+\[x = x_{\text{int}} \left(\frac{x_{\max} - x_{\min}}{2^l - 1}\right) + x_{\min}\]
+
+Where x_integer is coded as an $l$-bit binary number.
+This is also known as \magicword{linear mapping}.
+
+Sometimes, you'll find yourself trapped within the same solutions, and this could be for many reasons.
+In the case of \magicword{premature convergence}, where a lot of individuals resolve to similar levels early in the run, a helping hand could be needed.
+The same could be said if, after a lot of iterations, there's a \magicword{lack of selective pressure}, where individuals have around the same evaluations but do not converge.
+For this, and in order to find the optimum, the idea is to apply some kind of \magicword{scaling} to the problem.
+
+For maximization, linear scaling is quite common. Individuals with a fitness of $\bar{f}$ receive an adjusted fitness of 1.0.
+The best individual receives a constant, $C_{\text{mult}}$:
+
+\[f'_1(f(x_i)) = \left(f(x_i) - \bar{f}\right) \frac{C_{\text{mult}}-1}{f_{\max} - \bar{f}} + 1\]
+
+And another adjustment, a negative adjustment for those worst individuals if the average is too close to the maximum:
+
+\[f'_2 (f(x_i)) = (f(x_i) - f_{\min})\frac{C_{mult}}{f_{\max} - f_{\min}}\]
+
+So the real adjusted fitness is as follows:
+
+\[f'(f(x_i)) = \begin{cases}
+f'_1(f(x_i)), & f'_1(f_{\min}) \geq 0 \\
+f'_2(f(x_i)), & f'_1(f_{\min}) < 0
+\]
+
+They can be modified to perform minimization, but I won't cover that.
+
+Rank based selection may be good, but it's terrible in time
+
+\appendix
+\end{document}
