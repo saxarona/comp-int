@@ -185,32 +185,109 @@ Xavier Fernando Cuauhtémoc Sánchez Díaz \\
   \item A \texttt{readme.txt} file is included with the details needed for execution, along with the Texinfo per-module documentation, i.e. you can use \texttt{help PA03} in the Octave prompt for instructions.
 \end{itemize}
 
-\spacepls
+{\large \textbf{Run details}}
+
+The code \texttt{PA03(data, 1, 'c', 2, 0.1, 1000, 20)} correctly classified the dataset at run 18 with the following parameters:
+
+$$W1 =
+\begin{bmatrix}
+1.68740 & -0.97069 \\
+2.26922 & -1.68538
+\end{bmatrix}, \quad
+b1 =
+\begin{bmatrix}
+-1.0578 \\
+1.3578
+\end{bmatrix},\quad
+W2 = [-1.4709, 1.2349], \quad
+b2 = 0.0024276$$
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+The same story goes for problem number two, but instead a 4-attribute dataset was used (\texttt{Iris.csv}).
 
 {\large \textbf{Run details}}
 
-\spacepls
+The code \texttt{PA03(data\_iris, 2, 'c', 0.1, 1000, 20)} correctly classified the dataset at run 7 with the following parameters:
 
-PA03(data, 1, 0, 0.1, 1000, 20)
-
-ans = Run 18: accuracy: 1.000
-ans = 1.0 accuracy obtained at iteration 18!
-Parameters are the following:
-W1 =
-
-   1.68740  -0.97069
-   2.26922  -1.68538
-
+$$W1 =
+\begin{bmatrix}
+  0.597255 & 0.911574 & 0.699710 & 0.057203 \\
+  0.626836 & 0.237436 & 0.765186 & 0.088687
+\end{bmatrix}, \quad
 b1 =
-
-  -1.0578
-   1.3578
-
-W2 =
-
-  -1.4709   1.2349
-
-b2 =  0.0024276
-
+\begin{bmatrix}
+  0.038780 \\
+  0.041295
+\end{bmatrix}, \quad
+W2 = [-0.23743, 0.42891], \quad
+b2 =  0.30965$$
 \end{homeworkProblem}
+
+\begin{homeworkProblem}
+
+The neural network was trained using the regression mode in order to approximate the function values available in \texttt{dataset-function.csv}.
+
+The following parameters were used:
+
+\begin{lstlisting}
+PA03(datafn, 3, 'r', 3, 0.01, 5000, 1); hold on; plot(datafn(:,2)); grid;
+\end{lstlisting}
+
+$$W1 =
+\begin{bmatrix}
+  -2.1291 \\
+   5.3270 \\
+   7.6768
+\end{bmatrix}, \quad
+b1 =
+\begin{bmatrix}
+   -4.0754 \\
+  -13.6089 \\
+   21.0353
+\end{bmatrix}, \quad
+W2 =[-23.278, 18.499, 14.685], \quad
+b2 = -15.861$$
+
+As seen on  the listing presented below,
+the number of iterations was increased in order for 3 neurons to acquire a good approximation.
+Figures~\ref{fig:2n}~\ref{fig:3n} show these behavior.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Ex3-2n.png}
+  \caption{2-neuron function approximation}
+  \label{fig:2n}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{Ex3-3n.png}
+  \caption{3-neuron function approximation}
+  \label{fig:3n}
+\end{figure}
+
+Using a higher number of neurons can provide softer edges for the function approximation model.
+The ``best'' results would be using 13 neurons, as there were 13 rows in the dataset: a neuron per datum.
+This is an extreme assumption, but it shows the basic idea behind overfitting.
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+If the dataset is divided by 10, the model finds it more difficult to approximate the function.
+
+The values are too close from each other, and experimental results show that the model needed twice the training iterations that it used for the previous dataset.
+
+\begin{lstlisting}
+PA03(datafn2, 3, 'r', 3, 0.01, 20000, 1); hold on; plot(datafn2(:,2)); grid  
+\end{lstlisting}
+
+Since the values are so close, the model need additional time to `learn' the differences between values.
+This means that increasing the number of neurons is useful when dealing with `difficult' problems, with many different features to remember.
+However, this increases the time needed for appropriate learning.
+It is also important to take into account that a neuron is adding bias to the model,
+so more biases means a more specific model---one should be careful with overfitting.
+\end{homeworkProblem}
+
+
+
 \end{document}
