@@ -1,4 +1,4 @@
-## Copyright (C) Xavier Sánchez Díaz <xavier.sanchezdz@@gmail.com>
+## Copyright (C)  
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -22,23 +22,22 @@
 ## @seealso{functions
 ## @end deftypefn
 
-function W = train_kohonen(data, centroids, runs)
-	nb_outputs = rows(centroids);
-	W = rand(nb_outputs, 2);
-	%W = centroids;
-	%using radius 1
-	lrate = 0.8;
-	
-	for i = 1:runs
-		for datum = 1:rows(data)
-			p = data(datum,:);
-			distances = sum((W - p) .^ 2, 2);
-			index = find(distances == min(distances));
-			W(index,:) = W(index,:) + lrate * (p - W(index,:));
-			lrate -= 0.01;
-			if lrate <= 0
-				break;
-			end
+## Author:  
+
+%% functionname: function description
+function acc = lvq_test(data, W)
+	P = data(:,1:2);
+	T = data(:,3);
+	acc = 0;
+
+	for datum = 1:rows(data)
+		p = P(datum);
+		t = T(datum);
+		c = clusterize(p, W) - 1 %since we're using 0 and 1
+		if c == t
+			acc += 1;
 		end
 	end
+
+	acc = acc / rows(P);
 end

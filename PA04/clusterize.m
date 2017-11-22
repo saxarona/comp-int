@@ -22,23 +22,7 @@
 ## @seealso{functions
 ## @end deftypefn
 
-function W = train_kohonen(data, centroids, runs)
-	nb_outputs = rows(centroids);
-	W = rand(nb_outputs, 2);
-	%W = centroids;
-	%using radius 1
-	lrate = 0.8;
-	
-	for i = 1:runs
-		for datum = 1:rows(data)
-			p = data(datum,:);
-			distances = sum((W - p) .^ 2, 2);
-			index = find(distances == min(distances));
-			W(index,:) = W(index,:) + lrate * (p - W(index,:));
-			lrate -= 0.01;
-			if lrate <= 0
-				break;
-			end
-		end
-	end
+function c = clusterize(p, W)
+	distances = sum((W - p) .^ 2, 2);
+	c = find(distances == min(distances));
 end

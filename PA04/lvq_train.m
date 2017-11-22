@@ -22,19 +22,22 @@
 ## @seealso{functions
 ## @end deftypefn
 
-function W = train_kohonen(data, centroids, runs)
-	nb_outputs = rows(centroids);
-	W = rand(nb_outputs, 2);
+function W = lvq_train(data, nb_outputs, runs)
+	W = rand(nb_outputs, 2)
 	%W = centroids;
 	%using radius 1
 	lrate = 0.8;
+	P = data(:,1:2);
+	T = data(:,3);
 	
 	for i = 1:runs
-		for datum = 1:rows(data)
-			p = data(datum,:);
-			distances = sum((W - p) .^ 2, 2);
-			index = find(distances == min(distances));
-			W(index,:) = W(index,:) + lrate * (p - W(index,:));
+		for datum = 1:rows(P)
+			p = P(datum,:);
+			theclass = T(datum)+1;
+			index = clusterize(p, W);
+			if index == theclass
+				W(index,:) = W(index,:) + lrate * (p - W(index,:));
+			end
 			lrate -= 0.01;
 			if lrate <= 0
 				break;

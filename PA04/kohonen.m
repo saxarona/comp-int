@@ -24,7 +24,27 @@
 
 %centroids = [data(10,1) data(10,2); data(52,1) data(52,2); data(21,1),data(21,2)];
 
-function c = kohonen(p, W)
-	distances = sum((W - p) .^ 2, 2);
-	c = find(distances == min(distances));
+function c = kohonen(data, W)
+	plot(data(:,1), data(:,2),'.k', 'markersize', 10)
+	hold on;
+
+	for datum = 1:rows(data)
+		p = data(datum,:);
+		c = clusterize(p, W);
+		switch c
+			case 1
+				form = 'bo';
+			case 2
+				form = 'g^';
+			case 3
+				form = 'rd';
+			case 4
+				form = 'c*';
+			otherwise
+				form = 'yv';
+		end
+		plot(p(1), p(2),form, 'markersize', 10)
+		hold on;
+	end
+	hold off;
 end
