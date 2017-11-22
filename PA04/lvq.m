@@ -14,29 +14,43 @@
 ## along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {Outputs = } Function Name (Input Arguments)
-## Short Description
+## @deftypefn {Function File} {acc = } lvq(var@{data}, @var{W}, @var{runs})
+## Tests LVQ network with @var{data} and weights @var{W}
 ##
-## Long Description
+## @var{data}
+## @indentedblock
+## Matrix of data.
+## @end indentedblock
 ##
-## @seealso{functions
+## @var{W}
+## @indentedblock
+## Matrix of weights.
+## @end indentedblock
+##
+## @var{runs}
+## @indentedblock
+## Number of iterations for the testing process.
+## For automation processes.
+## @end indentedblock
+##
+## @seealso{train_lvq}
 ## @end deftypefn
 
-## Author:  
-
-%% functionname: function description
-function acc = lvq_test(data, W)
-	P = data(:,1:2);
-	T = data(:,3);
+function acc = lvq(data, W, runs)
+	%P = data(:,1:2);
+	P = data(:,1:4);
+	%T = data(:,3);
+	T = data(:,5);
 	acc = 0;
+	classes = [0 0 1];
 
 	for datum = 1:rows(data)
-		p = P(datum);
-		t = T(datum);
-		c = clusterize(p, W) - 1 %since we're using 0 and 1
-		if c == t
-			acc += 1;
-		end
+			p = P(datum,:);
+			t = T(datum);
+			c = clusterize(p, W);
+			if classes(c) == t
+				acc += 1;
+			end
 	end
 
 	acc = acc / rows(P);

@@ -14,28 +14,40 @@
 ## along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {Outputs = } Function Name (Input Arguments)
-## Short Description
+## @deftypefn {Function File} {W = } train_kohonen(@var{data}, @var{centroids}, @var{runs})
+## Trains a Kohonen network.
 ##
-## Long Description
+## @var{data}
+## @indentedblock
+## Matrix of data.
+## @end indentedblock
 ##
-## @seealso{functions
+## @var{centroids}
+## @indentedblock
+## Number of centroids.
+## Determine the number of outputs.
+## @end indentedblock
+##
+## @var{runs}
+## @indentedblock
+## Number of iterations for the training process.
+## Use a small amount, since using a lot can compromise clustering.
+## @end indentedblock
+##
+## @seealso{kohonen}
 ## @end deftypefn
 
 function W = train_kohonen(data, centroids, runs)
-	nb_outputs = rows(centroids);
-	W = rand(nb_outputs, 2);
-	%W = centroids;
+	W = rand(centroids, 2);
 	%using radius 1
 	lrate = 0.8;
 	
 	for i = 1:runs
 		for datum = 1:rows(data)
 			p = data(datum,:);
-			distances = sum((W - p) .^ 2, 2);
-			index = find(distances == min(distances));
+			index = clusterize(p,W);
 			W(index,:) = W(index,:) + lrate * (p - W(index,:));
-			lrate -= 0.01;
+			lrate -= 0.005;
 			if lrate <= 0
 				break;
 			end

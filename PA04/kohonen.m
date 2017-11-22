@@ -14,12 +14,21 @@
 ## along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {Outputs = } Function Name (Input Arguments)
-## Short Description
+## @deftypefn {Function File} {c = } kohonen(@var{data}, @var{W})
 ##
-## Long Description
+## Tests a Kohonen network using @var{data} with weights @var{W}.
 ##
-## @seealso{functions
+## @var{data}
+## @indentedblock
+## Matrix of data.
+## @end indentedblock
+##
+## @var{W}
+## @indentedblock
+## Weight matrix.
+## @end indentedblock
+##
+## @seealso{train_kohonen}
 ## @end deftypefn
 
 %centroids = [data(10,1) data(10,2); data(52,1) data(52,2); data(21,1),data(21,2)];

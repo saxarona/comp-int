@@ -14,31 +14,50 @@
 ## along with this program; If not, see <http://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {Function File} {Outputs = } Function Name (Input Arguments)
-## Short Description
+## @deftypefn {Function File} {W = } train_lvq(@var{data}, @var{nb_outs}, @var{runs})
+## Trains an LVQ network.
 ##
-## Long Description
+## @var{data}
+## @indentedblock
+## Matrix of data.
+## @end indentedblock
 ##
-## @seealso{functions
+## @var{nb_outs}
+## @indentedblock
+## Number of output neurons.
+## @end indentedblock
+##
+## @var{runs}
+## @indentedblock
+## Number of iterations for the training process.
+## Use a small amount, since using a lot can compromise clustering.
+## @end indentedblock
+##
+## @seealso{lvq}
 ## @end deftypefn
 
-function W = lvq_train(data, nb_outputs, runs)
-	W = rand(nb_outputs, 2)
-	%W = centroids;
+function W = train_lvq(data, nb_outs, runs)
+	%W = rand(nb_outs, 2);
+	W = rand(nb_outs, 4);
 	%using radius 1
 	lrate = 0.8;
-	P = data(:,1:2);
-	T = data(:,3);
-	
+	%P = data(:,1:2);
+	P = data(:,1:4);
+	%T = data(:,3);
+	T = data(:,5);
+	% assign classes
+	classes = [0 0 1];
+	%W = [-1 0; 0 1; 1 0; 0 -1; -0.5 -0.5; 0.5 0.5];
+
 	for i = 1:runs
-		for datum = 1:rows(P)
+		for datum = 1:rows(data)
 			p = P(datum,:);
-			theclass = T(datum)+1;
-			index = clusterize(p, W);
-			if index == theclass
+			t = T(datum);
+			index = clusterize(p,W);
+			if classes(index) == t
 				W(index,:) = W(index,:) + lrate * (p - W(index,:));
 			end
-			lrate -= 0.01;
+			lrate -= 0.05;
 			if lrate <= 0
 				break;
 			end
