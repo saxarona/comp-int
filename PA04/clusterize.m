@@ -1,4 +1,4 @@
-## Copyright (C) Xavier Sánchez Díaz <xavier.sanchezdz@@gmail.com>
+## Copyright (C) Xavier Sánchez Díaz <mail@@gmail.com>
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
